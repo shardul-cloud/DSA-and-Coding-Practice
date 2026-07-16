@@ -1,0 +1,1330 @@
+
+breaking projects down into smaller, manageable phases called sprints<1-4 weeks>, allowing teams to deliver incremental improvements and adapt to changes quickly
+collab between dev,test,business
+agile framework---
+Scrum: Focuses on delivering work in fixed-length iterations called sprints, with roles like Scrum Master and Product Owner1.
+Kanban: Uses visual boards to manage work in progress and improve workflow1.
+
+
+sql Data :is any  form info send electronically
+database:collection of data in form of table
+Sql:store ,retrieve manipulate database
+
+
+SELECT
+FROM
+join
+on  <give conditions to be applied on table before join i.e individual table>
+WHERe <conditions applied on result set after join>
+GROUP BY
+HAVING
+
+
+ BY      --alias name cn be used here not above in where,having while filtering
+limit x
+OFFSET n ROWS --leave 1st n rows
+FETCH NEXT [row_count or n PERCENT] ROWS ONLY <WITH TIES- to take extra which are similar to last row> ;    /*prints first n rows
+
+
+
+
+
+where rownum<n;
+
+precedence / priority
+
+1 arithmeic      *
+2 concat        " "
+3 compare       /\ 
+no/equal/bet     ~
+logical         &&
+9 assigning		 =
+---------------------
+SELECT col1, col2, ..., colN
+GROUP_CONCAT ( [DISTINCT] col_name1 
+[ORDER BY clause]  [SEPARATOR str_val] ) 
+FROM table_name GROUP BY col_name2;
+
+denormalize
+select sell_date,count(distinct product) as num_sold,group_concat(distinct product order by product) as products from activities group by sell_date order by sell_date;
+
+-----------------
+data types in sql:
+integer
+numeric
+real
+decimal
+float
+char-fixed length/padding at empty space
+varchar-assign a byte size, may take less bytes if less data, but resize at bytes level
+varchar2- more efficient,resizing at runtime
+Nvarchar/nchar - unicode data,ascii table of 128bits ,universal codes for each character
+bit
+ date
+time
+timestamp
+time zone
+
+
+
+select col as column,col2 as "is  col 2" from table;
+select Distinct col1,coll2 from table;  distinct ued once and selects distinct ofall rows
+concat:|| joins string to col or col to col:=
+select col || col2 || " my name" as "name" from tbl;
+
+
+relational :
+>,<,<>-notequal also != not equal,between x and y ->inclusive of x and y,
+	not between x and y->value not x,y,and between,in (,,,);
+
+selct col not like %a%;_a%    --
+ sensitive,ILIKE 
+
+ insensitive
+is null,is not null
+and,or,not
+
+TO_NUMBER(col,'format{'YYYY'}') -charto num
+	to_number(char,format of char)-->  to_number('$111,123,451.000','$999,999,999.9999')  
+TO_CHAR(data,'format')    - num / date to char e.g to_char(sal,'00,00,000') will print number into 04,01,000 format
+to_char(sysdate,'dd/mm/yyyy')
+to_char(num)-->default means to_char(num,TM) i.e text min it removestrailing leading zeros,
+		if want specified places for all digits--> to_char(num,'C999.99'<this is format of num>) i/p 12.5 o/p <space>12.5<space> ,C for cuurency $
+TO_DATE     - char to  date e.g to_date('344535','dd-mm-yy<format of string which is givn i/p>')
+
+
+data types:
+numeric(p,s)   -- p-precision,s-scale, 123.456(6,3) p is no of digits,s no of digits afer point, write small s for rounding but p must be full no of  digits -numeric same as decimal
+integer-no decimal point
+char(p<optional>) -fixed char length,hence unused space at end
+varchar(n) - variable length ,n is in byte,if want to specify in char,write n char
+varchar2 - truncates extra spaces unlike varchar,oracle standard,hasa more space
+nvarchar- uses unicode
+
+SELECT A.ENAME ,(SELECT ENAME FROM EMP WHERE A.MGR = EMPNO) MANAGER FROM EMP A;  
+
+
+
+
+formatting number:    00.0000   -->places digits  and 0 were no digits e.g 2.4 becomes 02.4000
+                                     #0.00####  ->hash similar to 0 but not displayed if no digit  e.g 2.4 -> 2.40
+			for date ##-##-####
+
+WHERE HIRE_DATE > TO_DATE('12-JUN-2021');   TO compare with dat convert to date ,dont forget to put quotes
+
+null in arithmetic eqn gives null and if null concated with str gives str . 
+
+function:-  nvl(ex1,exp2);  if exp1 null,gives exp2 eg: nvl(exp1,0);
+nvl2(exp/col,ifnotnullval,ifnullval);  tertiary func
+nullif(exp/col,compval) --if expcol==compval -> null will be displayed else exp/col printed
+coalesce(exp1,exp2,exp3) shows 1 if not null else 2 else 3 returns first not null val
+
+
+CHAR FUNCS:   take char inputs 
+
+cases: lower(),upper(),initcap(first letter cap)
+
+
+select substr('dfd',1,3) form tbl;   prints first index and no of indexes corresponding to second num,second num is not index,if second no not written will continue till last
+
+length('')
+concat(' ',' '), 'sql' || 'course' 
+trim(' ') remooves leading and trailing space,not between spaces
+ltrim left trim
+rtrim right trim
+trim(x from y) -> x is char or num to be trimmedfrm y
+replace('string','this','with this')  replacing is case sensitive
+lpad('string',totalnumericlen,'chartobetyped')    ---if string is not of required length then append chars at left
+RPAD()
+instr('fdvfds','v')  ---gives  index of v
+chr(char<a,d,g>) ->gives ascii value
+
+NUMERIC Func
+
+round(12.23333,2)  return with two numbers after decimal point and rounded last deciml  here 12.23 if 12.236 ->12.24
+trunc(12.237,2)  will remove num after two decimals,no ronding,->12.23
+ceil(),floor()
+mod(23,34) remainder
+
+
+Default date format is DD-MON-RR
+
+SYSDATE - SYSTEM DATE with timestamp
+CURRENT_DATE - RETRUNS CURRENT DATE FROM USERS SESSION only date
+SESSIONTIMEZONE - RETURNS TIME ZONE OF USERS SSSION
+CURRENT_TIMESTAMP - RETURNS DATE AND TIME FROM USERS SESSION
+
+
+
+ADD_MONTHS    ----    ADD_MONTHS('DD/MON/RR' OR SYSDATE OR DATE_COLMN,1 OR -2);
+to add days,directly write datecol+n;
+MONTHS_BETWEEN('03-SEPT-15', '12-JAN-15')---
+ROUND(SYSDATE,'MONTH') rounds month if > < 15,also can br rounnded based on year //i just round(date) then day is rounded
+TRUNC(SYSDATTE,'YEAR/MONTH')  PRINTS first date of month or 1 jan if year
+NEXT_DAY(SYSDATE,'friday')  retun next friday date
+LAST_DAY(sysdate) - return 30-jun-2021 typE
+----------------------------------------------------
+YTD = @DATEDIFF ('DD', '2011-01-01', @DATENOW ())
+DATEDIFF(day/month/year, <start_date>, <end_date>);
+DD, which computes the difference in days.
+SS, which computes the difference in seconds.
+--->>>>
+DECLARE 
+@start VARCHAR(10) = (
+  SELECT order_date FROM demo_orders
+  WHERE item_name = 'Maserati'),
+@end VARCHAR(10) = (
+  SELECT order_date FROM demo_orders
+  WHERE item_name = 'Ferrari')
+  
+
+--@start variable holds the start date(i.e date of Maserati being purchased).
+
+--@end variable holds the end date (i.e date of Ferrari being purchased).
+
+SELECT DATEDIFF(month, @start, @end) AS number_of_months;
+
+--In place of month we could use year or day and that would give the respective no. of years and 
+--days in between those dates.
+
+----------------------------------------------------------------------
+
+
+extract(XXXX from col_date)   xxxx-YEAR,MONTH,DAY,WEEK
+AGE(hire_date)  --tell time till present
+
+DECODE (COL or EXP, rowval,newval or exp
+		    rowcalcomparewithcolorexp,newval
+			defaultvalifnomatch)
+
+
+select decode(job_id, 'manager', sal*1.2
+		    'salesman',sal*1.1,
+		    salary)
+
+case when then else end
+
+case empID when 100 then sal+200 when 30 then sal+ 500 else sal from tblnme;
+--- case when exp_of_col_ then action allows to have arithmetic decicsion on col 
+
+GROUP FUNCS
+MAX(COL) RETURNS ONE MAX VAL
+MIN()   null can be managed by nvl    min(nvl(col or exp,0))
+
+select count(*)  counts all rows with null
+          count(col1) counts rows in col excludin null
+          count(distinct id) counts distinct
+avg(),sum()  used wth num only
+
+GROUP BY FUNC
+SELECT DPT_ID ,min(salary),count(*) from tblnme group by DPT_ID;
+	for every distinct DEPARTMENT separate min salary will be calculated and it count of distinct dept
+
+important when asked to find cellID who has mac no of transactions or it avg no of occurences for any task 
+
+que:
+what are the customerID of customers who have spent more tha $100 in payment transactions with our staff_id member 3
+
+ select customerID ,sum(transaction) from tblnme
+where staff_Name =  'member 2'
+group by customer_id
+having sum(transaction)>100
+
+
+
+
+select custId,custNme,sum(amount) from tblnme
+group by custId,custNme     ->grouped by for all non col without funcs 
+order by sum(amount);        ->orders by group sum
+
+null comes last in asc and vice in desc or use nulls first/last 
+
+select dept_id as dept,avg(salary) from tbl 
+group by dept_id;
+
+this shows table with distinct deptid with avg sal
+
+HAVING clause used in grouping func like avg,sum with group by
+
+
+JOINS
+natural join auto combine on common columns
+select * from  emp natural join dept ;
+all common colomns are compared
+
+simple JOIN
+sleect emp.name,dept.id from emp join dept
+using dept_id ;
+here selected colomns are compared
+or 
+sleect emp.dep_id,emp.name,dept.dep_id,dept.name from emp join dept
+on (emp.dep_id = dept.dept_id and emp.manag_id = dept.manage_id)
+where tblnme.colnme = > 4;
+
+
+
+self join
+A self join is a join that joins a table with itself. A self join is useful for comparing rows within a table or querying hierarchical data.
+
+
+SELECT A.CustomerName AS CustomerName1, B.CustomerName AS CustomerName2, A.City
+FROM Customers A, Customers B             ->no writing of join or self join,directly  give comma
+WHERE A.CustomerID <> B.CustomerID
+AND A.City = B.City
+ORDER BY A.City;
+--------
+select 2nd highest sal
+#select m.salary as SecondHighestSalary FROM (select e.*,dense_rank() over (order by e.salary) rn FROM Employee e) m where  m.rn=2;
+
+#select max(e1.salary) as SecondHighestSalary from employee e1 join employee e2 on e1.id<>e2.id and e2.id>e1.id;
+
+select (select distinct salary from employee order by salary desc limit 1 offset 1) as SecondHighestSalary;
+-----------------
+
+
+SELECT
+   e1.hire_date,
+  (e1.first_name || ' ' || e1.last_name) employee1,
+  (e2.first_name || ' ' || e2.last_name) employee2  
+FROM
+    employees e1
+INNER JOIN employees e2 ON
+    e1.employee_id > e2.employee_id
+    AND e1.hire_date = e2.hire_date
+ORDER BY  
+   e1.hire_date DESC,
+   employee1, 
+   employee2;
+
+
+select work.firstnme || ' ' || work.lastnme "fullnme" ,manager.first || ' ' ||manager.lst from emp as work join emp as manager
+on (work.manager_id = manager.empId)
+order by work.empId
+
+JOINING THREE TABLES
+  
+select l.firstname,l.last_name,d.departmentNmae,e.city,e.streetAddress
+from employees l
+join departments d
+on (l.department_id = d.departmenId)
+join locations e
+on (e.location_id = d.location_id)
+
+
+
+ALL ABOVE ARE  INNER JOIN were matching rows are selected 
+
+OUTER JOIN
+
+LEFT,RIGHT,FULL outer join
+
+select e.first,e.last,e.dept,d.deptid,d.deptname
+from emp e right outer joi dept d
+on (e.deptid = d.deptid);
+
+
+cross join 
+from emp e cross join dept d;
+generates emp rows x dept rows
+join all rows to all rows
+ 
+select firstName,LastName deptId,salary 
+from employes
+where departmentId = (select deptd                                        NESTING USED FOR DIFFERENT TABLES WHERE CLAUSE
+			from emp
+			where empId  = 110)
+		and salary> (select salary 
+				from employees
+				WHERE EMPLOYEEId=110)
+subquery
+select * from employee
+where salary> =(select avg(salary) from employee)
+
+OUTER SUBQUERY
+EXISTS->The EXISTS operator returns true if the subquery returns any rows, otherwise, it returns false
+SELECT
+    name
+FROM
+    customers c
+WHERE
+    EXISTS (
+        SELECT
+            1                           ->can write 1 bcoz its not going to print
+        FROM
+            orders
+        WHERE
+            customer_id = c.customer_id
+    )
+ORDER BY
+    name;
+
+The EXISTS operator stops scanning rows once the subquery returns the first row because it can determine the result whereas the IN operator must scan all rows returned by the subquery to conclude the result.
+ the IN clause can’t compare anything with NULL values, but the EXISTS clause can compare everything with NULL values.
+
+
+,NOT EXISTS-> 
+
+
+SELECT
+    *
+FROM
+    table_name
+WHERE
+    col => ANY (
+        v1,
+        v2,
+        v3
+    );
+
+select d.* from dept d where exists/not exists(select e.empno from emp e where e.dept = d.deptno)
+
+select * form employees where dept in 
+(select deptid from depart where location in (select loacionid from loxation where coutrid = 'us');
+
+
+SET operators
+union - all eliminates duplicate
+union all- with dupicate
+
+SELECT
+    column_list_1
+FROM
+    T1
+UNION 
+SELECT
+    column_list_1
+FROM
+    T2;
+
+
+intersect-common
+minus -first minus second-contains foiest query withot second.gives rows in first not present in second
+
+select jobid,date,DoB from job where xys
+UNION
+select jobid,date,NULL from emp where xyz;
+gives combined distinct rows
+///should select col respectively,if not availabl write null
+
+Data Manipulation Language
+INSERT
+DELETE
+UPDATE
+
+insert into tblnme ()
+value ();
+
+insert into emp_add
+select empID,firstnme,addres  from employees
+
+update emp set salary  200
+where jobId = 'it_prog';
+
+UPDATE employee
+SET bonus =
+  CASE
+    WHEN salary < 3000
+    THEN 100
+    WHEN salary BETWEEN 3000 AND 4000
+    THEN 200
+    WHEN salary BETWEEN 4001 AND 4900
+    THEN 300
+  END;
+
+delete from emptblwhere id = '93';
+delete from tblnme;  //deletes all rows from table
+delete from tbl where id in (select * from emp where id = 90);
+----------------
+DELETE a
+FROM CUSTOMERS AS a INNER JOIN ORDERS AS b
+ON a.ID = b.CUSTOMER_ID;
+---------------
+
+
+DDL - aut commited
+Data definition language
+create,
+
+
+,rename,drop
+
+create tale tblnme
+(
+employeeID number(3),          
+firstNmae varchar2(50),          //varchar can store alphannumeric and char 		lastName varchar2(50),			only character
+hire_Date date default SYSDATE
+);
+
+RENAME tblnme to newtblnme;
+
+alter table tblnme add sal number(100);
+alter table tblnme modify colnme cngedatatype() not null ;
+alter table tblnme rename column sal to salary;
+alter table tblnme drop colomn salary;
+ALTER TABLE Orders
+DROP CONSTRAINT FK_PersonOrder;
+
+drop TABLE tblnme;
+truncate table tblnme;
+
+select next_day(sysdate,'friday') from dual;   ///reurns nxt date o friday
+last_day(sysdate) //returns last date of that month  
+THESE ARE IN DD-MON-YY format
+
+select EXTRACT(YEAR/MONTH/DAY FROM hiredatecol) from tbl; prints only year/mon/day respectively
+
+DCL  data control languge
+
+grant- to give perrmission
+
+revoke - revoke/cancel privilages ,
+
+TCL
+transaction control language
+commit-save
+rollback-undo/discard changes
+
+
+TYPE OF RETRICTION
+NOT NULL   e.g create table tblnme( account_Type varchar(20) CONSTRAINT constraintNameuserdefinedOptional not null,
+sal number(10)
+age number(10) ,check(age>18)
+unique(sal,age)
+);
+
+alter table tblnme add check(age>18);  //add constranint
+alter table tblnme modify sal number(10) not null;  //modify contraint after creating table
+alter table tblnme add unique(id);
+
+foreign key
+create table tblnme child(acc_Num number(10) references parentTblnme(colNmeToLink);
+
+alter table drop constraint constraintNme (CASCADE if it is a foreign/primay key);
+desc user_constraints; to list constraint names
+
+VIEW
+to give window to selected part
+create view v1 as select empno,ename form emptbl;
+select * from v1;
+
+
+create sequence sq start with x increment by +-y maxvalue z cycle(if want to repeat no.);
+
+sq.currval returns current val
+sq.nextval returns next val
+
+update tblnme set srno_colnme = sq.nextval;
+
+create synonym emp for employee; private default
+ 
+Indexes are special lookup tables that are used to speed up the process of data retrieval. They hold pointers that refer to the data stored in a database.physically stored but not visible.
+created on column(s) of a large table that are frequently queried for data retrieval.
+Data in a table is stored in the form of an unordered data structure called a "Heap", where rows are placed without any specific order. Thus, when retrieving data from a table, the query optimizer must scan the entire table to locate the requested rows. 
+
+When a clustered index is defined on a specific column, during the creation of a new table, the data is inserted into that column in a sorted order. This helps in faster retrieval of data
+
+create index ind on emp(colnme,colnme2); //used in search nd sort,indexed in ascending ordered of colnme,colnme2. default is asc
+CREATE INDEX index_name ON table_name(column_name [asc|desc]) -->clustered index
+create unique index ind on emp(empID);  //applied were data is distinct  else error 
+
+create index in on emp(mgr) revere; // indexed mgr in desc
+
+
+SHOW INDEX FROM CUSTOMERS; --- shows indexes applied on table,primary key is also an index
+
+create bitmap index ind on tblnme(gender);
+drop index indnme;
+
+?????????
+Non-Clustered index is similar to the Clustered index. When defined on a column, it creates a special table which contains the copy of indexed columns along with a pointer that refers to the location of the actual data in the table. However, unlike Clustered indexes, a Non-Clustered index cannot physically sort the indexed columns
+it creates separate tbl with pointers pointing to col in sorted order.
+CREATE NONCLUSTERED INDEX index_name 
+ON table_name (column_name)
+
+
+index to be used to imprv read, not writes.
+can imprv perf by doing sort and grp by.
+to be used on col freq accessed in where clause.but not updated freq.
+
+
+
+--------------------------------
+database objects:views,tables,indexes,synonyms
+
+handson
+
+group by funcs are confusing to understand wether to implement,sometimes used with where and having
+select customerID from blnme 
+where staffD = 2
+group by customerID
+having sum(spent)>=110
+
+select count(*) from tblnme
+where name like 'J%';
+
+
+select district,country,empname from addressTBL
+inner join custTBL on addressTBL.col =  custTBL.col
+where (condition based on custTBL which is not to be printed but to filter) custName = '';
+
+select colnames_required_from_all_tables from firstTBL
+ inner join on tbl1.col = tbl2.col
+inner join tbl3
+on tbl2_or_3(depending on comon col).col =  tbl3.col
+where condition;
+
+where deptno = &x;   will ask deptno while running
+
+ 
+
+*************888*************************************************************************************************************************************************************************************************************************************************************************
+
+Write a query to select Nth maximum salary from EMP table
+(or)
+Write a query to find 2nd, 3rd max salary from EMP table
+(or)
+Write a query to find 10 highest salary
+(Or)
+Write a query to find 4th highest salary (without analytical function)
+Answer:
+We can achieve this by using the correlated sub query. In the below example we are getting the 5th
+highest salary without using the Analytical function.
+select *
+from emp emp1
+where (5-1) =
+(
+select count(distinct(emp2.sal))
+from emp emp2
+where emp2.sal > emp1.sal
+)
+In the below example we are getting the 5th highest salary by using the Analytical function.
+select * from
+(
+select e.*,
+DENSE_RANK() over (order by sal DESC) RN
+from emp e
+)
+where RN=5
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+Write a query to select top N salaries from the EMP table
+(or)
+Write a query to select maximum N salaries from the EMP table
+Answer:
+We can achieve this by using the DENSE_RANK Analytical function. In the below example we are 
+getting the TOP 5 salaries from the EMP table.
+select * from
+(
+select e.*,
+DENSE_RANK() over (order by sal DESC) RN
+from emp e
+)
+where RN <=5
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+Write a query to select top N salaries from each department of the EMP table
+(or)
+Write a query to select maximum N salaries from each department of the EMP table
+Answer:
+We can achieve this by using the DENSE_RANK Analytical function. In the below example we are 
+getting the TOP 3 salaries for each department of the EMP table.
+select * from
+(
+select e.*,
+DENSE_RANK() over (partition by deptno order by sal DESC) RN
+from emp e
+)
+where RN <=3
+
+///////////////////////////////////////////////////////////////
+Find the product category with the highest average unit price.
+
+SELECT category
+FROM Products
+GROUP BY category
+ORDER BY AVG(unit_price) DESC
+LIMIT 1;
+//////////////////////////////
+Categorize sales as “High”, “Medium”, or “Low” based on total price (e.g., > $200 is High, $100-$200 is Medium, < $100 is Low).
+SELECT sale_id, 
+       CASE 
+           WHEN total_price > 200 THEN 'High'
+           WHEN total_price BETWEEN 100 AND 200 THEN 'Medium'
+           ELSE 'Low'
+       END AS sales_category
+FROM Sales;
+
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+Identify sales where the quantity sold is greater than the average quantity sold.
+
+SELECT *
+FROM Sales
+WHERE quantity_sold > (SELECT AVG(quantity_sold) FROM Sales);
+
+SELECT s.*
+FROM Sales s
+JOIN (SELECT AVG(quantity_sold) AS avg_quantity_sold FROM Sales) avg_table
+ON s.quantity_sold > avg_table.avg_quantity_sold;
+
+
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+Write a query to select only those employee information who are earning the same salary?
+Answer:
+We can achieve this in at least 3 ways…
+1
+st way
+select e1.* from emp e1,emp e2 
+where e1.sal=e2.sal 
+ and e1.ename <> e2.ename
+2
+nd way
+select * from emp 
+where sal in
+ (select sal from emp 
+ group by sal 
+ having count(sal)>=2
+ )
+3
+rd way
+SELECT *
+FROM
+(
+SELECT e.*, count(*) Over (Partition BY sal ORDER BY sal) cnt
+FROM emp e
+)
+WHERE cnt>=2;
+
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+Write a query to display even/odd number rows from a table.
+Answer:
+We can achieve this by using the ROWNUM pseudo column.
+select * from
+ (select empno, ename, sal, rownum rn
+ from emp
+ order by empno
+ )
+where mod (rn, 2) <> 0
+order by rn
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+Write a query to display the employee information, who have more than 2 employees under a 
+manager
+Answer:
+We can achieve this by using the COUNT analytical function.
+select * from
+(
+SELECT e.*, count(mgr) over (partition by mgr) as cnt
+from emp e
+)
+where cnt >= 2
+//////////////////////////////////////////////
+leetcode
+Write a solution to report the name and bonus amount of each employee with a bonus less than 1000.
+select e.name, b.bonus from Employee e left join Bonus b 
+on e.empID=b.empID where b.bonus<1000 or b.bonus is null;
+--------------------
+
+
+SELECT COALESCE(Employee.Employee_Name, 'No Employee') AS Employee_Name,
+       COALESCE(Department.Department_Name, 'No Department') AS Department_Name
+FROM Employee
+FULL OUTER JOIN Department
+ON Employee.Department_ID = Department.Department_ID;
+//////////
+Write a solution to find managers with at least five direct reports.
+select e2.name from Employee e1 left join employee e2 on e1.managerId=e2.id
+group by e2.id,e2.name
+having count(e2.id)>4;
+//////
+Write a solution to calculate the number of unique subjects each teacher teaches in the university.
+select  teacher_id , count( distinct subject_id)  as cnt from teacher
+group by teacher_id;
+////////
+
+
+////////////////////////////////////////////////////
+rite a query to find the maximum salary from the EMP table without using functions.
+Answer:
+We can achieve this by using the SELF joins.
+select * from emp 
+where sal not in
+(
+select A.sal
+from emp A, emp B
+where A.sal < B.sal
+)
+
+////////////////
+
+rite a query to find the number of rows in a table without using COUNT function.
+Answer: 
+SELECT MAX(rn) FROM 
+( 
+SELECT ROW_NUMBER() OVER(ORDER BY empno DESC) as rn FROM emp 
+)
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+select * from emp 
+minus 
+select * from emp where rownum <= 
+ (select count(*) - &n from emp);
+
+///////////////////////////////////////////////////////////////////////////////////////////
+Write a query to find the employees who are working in the company for the past 5 years.
+Answer:
+We can achieve this using the ADD_MONTHS function.
+select * from emp where hiredate < add_months(sysdate,-60);
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+select DENSE_RANK(1000, 500) WITHIN GROUP (ORDER BY salary, bonus)
+from employees;
+The SQL statement above would return the dense rank of an employee with a salary of $1,000 and a bonus of $500 from within the employees table.
+
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+CREATE TRIGGER trigger_name      
+    (AFTER | BEFORE) (INSERT | UPDATE | DELETE)    
+         ON table_name FOR EACH ROW      
+         BEGIN      
+        --variable declarations      
+        --trigger code      
+        END;  
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+over partition by
+
+
+SELECT  Name, 
+ Salary, 
+ Department,
+ COUNT(Department) OVER(PARTITION BY Department) AS DepartmentTotals,
+ SUM(Salary) OVER(PARTITION BY Department) AS TotalSalary,
+ AVG(Salary) OVER(PARTITION BY Department) AS AvgSalary,
+ MIN(Salary) OVER(PARTITION BY Department) AS MinSalary,
+ MAX(Salary) OVER(PARTITION BY Department) AS MaxSalary
+FROM Employees
+
+|||||||||||||||||||||||||||||||||
+ANALYTICAL FUNCTIONS - refer oracle live sql , analytic functions in view scripts tutorials
+SELECT b.* , count(*) over () from emp b;  --count cannot be used directly with al col as it is a single row function ,over () tells for how many rows.blank represents all.
+select b.* , count(*) over (partition by col) from emp; -- // this partion by works as group by , it returns numericalsinglerowfunction valueto all those of one group with respect to that group, here the value will de printed again and again for all records corresponding to that particular group
+
+over -- running result , gives result rowby sequence runing
+e.g-
+select .* , sum(id)  over (order by id) from tale; --will give like fibonacci of id col
+partition groups groups and give results same for all records of that group
+order by gives results based on running till last rec
+e.g
+select b.*, count(*) over (partition by col order by col [desc]) - will give running result for that group as a differetn entitiy , next group result wont be counted in continuation with previos
+
+above query is same as follows:
+select b.*,sum(weight) over (order by brick_id range between unbounded preceding and current row) from bricks b order by brick id;
+unbounded preceding means consider all rows above incliuding curretn row
+	here ,if the order by col has  same val for few rec , then it will acs as a partition for that group of same val recs with value given as same for all recs i.e sum of all same val recs and to all .
+o avoid this use rows between instead of range between
+
+sliding window:- instead of unbounded preceding  , we give a bounded preceding, hence window
+e.g: 
+select b.* , sum(weight) over (order by weight rows between 2 preceding and current row) as running_weight_of_previos2+current row_weight from bricks order by weight;
+
+to give where condition on analytical col :
+select * from (analytical query i.e select col,count(*) over(...) from tab) where count(*)>=n;
+
+
+select row_nummber() over(order by weight) ,  --each row has a new incremented value,even incremented for same val
+	rank() over  (order by_weight ),          --rows with same weight has same number which corresponds to first weight's row no., next new weight record will have a number which would its position no. from top.i.e(row number). 
+	dense_rank() over (order by weight) - rows withsame wt. has same val , but next new wt. rec will have incremented value after the previos count value
+from bricks;
+
+lag(),lead gives values from rows backwards and forwards 
+select lag(shape) over (order by brick_id),   -- value of shape of the record which falls before current records where records ordered by brick_id.null for first rec as no lag val
+	lead(shape) over (order by brick_id)  -- null at last rec
+from bricks b;
+ 
+first and last__
+select first_value(weight) over (order by brick_id), returns first record val
+	last_value(weight) over (ordder by brick_id) -returns current record val bcozfollowing records are not read after current record by defult it is till current row 
+from bricks;
+
+select b.*,last_value(colour) over( partition by brick_id order by brick_id range between current row and unbounded following) from bricks b;  - first ocurred colour in that group of brickid
+
+
+
+
+INSERT ALL
+	INTO TAB1 (COL,,, )  VALUES ( ... )
+	INTO TAB2 (COL  ) VALUES ( .. )
+select col.. from source_tab_name;
+
+INSERT ALL
+  when sal<1500 then 
+	INTO TAB1 (COL,,, )  VALUES ( ... )
+  when sal>1500 then
+	INTO TAB2 (COL  ) VALUES ( .. )
+select col..,sal from source_tab_name;
+
+
+select all from dept table where employew is yogest
+
+SELECT *
+FROM department
+WHERE id =
+  (
+    SELECT department_id
+    FROM employee
+    WHERE birthdate =
+      (
+        SELECT MAX(Birthdate)
+        FROM employee
+      )
+  );
+2nd way---
+WITH max_age AS (
+    SELECT MAX(bday) AS bd
+    FROM emp
+)
+SELECT d.*
+FROM dept d
+RIGHT JOIN emp e ON d.dept_id = e.dept_id
+JOIN max_age m ON e.bday = m.bd;
+3rd way----
+SELECT d.*
+FROM dept d
+RIGHT JOIN emp e ON d.dept_id = e.dept_id
+JOIN (
+    SELECT MAX(bday) AS bd
+    FROM emp
+) m ON e.bday = m.bd;
+
+----cannot use agregate funcs in where clause except having clause.
+??????????????????
+use CTE-
+
+with cte as (select dept_id from emp where ) e
+
+select d.* from dept d join e on d.bday
+
+
+merger:
+merge into existing_same_schema_table 
+using source_tbale_data_name 
+on (col=col)
+when matched then 
+    update set
+    c.first_name = n.first_name
+when no matched then
+   insert (cols) values ();
+
+dcl
+grant,role,revoke
+grant select,update,delete  to 
+
+dml
+savepoint savepoint_name
+dml
+rollback to savepoint_name;
+dml
+commit
+rollback - > only rollback to last commit
+
+
+
+SQL Int ----
+RANK: Will rank a column but will skip a value if there are ties.
+DENSE_RANK: Will rank a column bbut will NOT skip a value for ties.
+ROW_NUMBER: Assigns a unique row number to each row.
+
+SELECT
+	user_name,
+	salary,
+	RANK() OVER (ORDER BY salary desc),
+	DENSE_RANK() OVER (ORDER BY salary desc),
+	ROW_NUMBER() OVER ()
+FROM
+	user_salary;
+----------------------
+
+---------------------------
+--------------------------
+select n th highest sal
+
+CREATE FUNCTION getNthHighestSalary(N INT) RETURNS INT
+BEGIN
+  RETURN (
+      select d.s from (select e.salary s,dense_rank() over (order by e.salary desc) r from Employee e) d where d.r=N limit 1
+  );
+END
+---------------
+---------------
+with lkup as (select emp.* , dense_rank over (order by sal) r from emp)
+
+select e.sal from emp e join lkup on e.sal= (select emp.sal from lkup where r=Nthpos)
+or
+select e.sal from emp e join lkup on e.id=lkup.id 
+join (select l.sal from lkup l where r=Nth_pos) on l.sal=e.sal;
+
+------------------------------------
+Find records in a table which are not present in another table.
+SELECT
+	lt.id
+FROM left_table AS lt
+LEFT JOIN right_table AS rt
+ON lt.id = rt.id
+WHERE rt.id IS null;
+
+----------------------
+Common Table Expression (CTE) 
+--------------------------
+ temporary result set that you can refer
+
+Find second highest salary employees in each department.
+
+WITH get_salary_rank AS (
+	SELECT
+		emp_name,
+		department,
+		salary,
+		DENSE_RANK() OVER (PARTITION BY department ORDER BY salary desc) AS rnk
+	FROM
+		employee
+)
+SELECT
+	emp_name,
+	department,
+	salary,
+	rnk
+FROM
+	get_salary_rank
+WHERE
+	rnk = 2;
+---------------------------
+ identify employees whose salaries are higher than their managers' salaries.
+SELECT w.emp_name,
+       w.job_name,
+       w.manager_id,
+       w.salary,
+       m.emp_name "Manager",
+       m.emp_id,
+       m.salary "Manager_Salary"
+FROM employees w,
+     employees m
+WHERE w.manager_id = m.emp_id
+  AND w.salary > m.salary;
+self join- left emp id should map to his mgr id and mgr sal and then comp
+-----------------
+UPDATE the table and swap the gender values using a CASE statement.
+UPDATE people
+SET gender = 
+	CASE
+		WHEN gender = 'M' THEN 'F'
+		ELSE 'M'
+	END
+WHERE
+	gender IS NOT NULL;
+
+-------------------------
+SELECT 
+	now() AS moment_in_time,
+	EXTRACT(century FROM now())::numeric AS century,
+	EXTRACT(decade FROM now())::numeric AS decade,
+	EXTRACT(YEAR FROM now())::numeric AS year,
+	EXTRACT(MONTH FROM now())::numeric AS month,
+	EXTRACT(DAY FROM now())::numeric AS day,
+	EXTRACT(TIMEZONE_HOUR FROM now())::numeric AS timezone;
+
+-------------------
+
+A Local Temp Table is available only for the session that has created it. It is automatically dropped (deleted) when the connection that has created it, is closed. To create Local Temporary Table Single “#” is used as the prefix of a table name.
+CREATE TABLE #EmpDetails (id INT, name VARCHAR(25)) 
+INSERT INTO #EmpDetails VALUES (01, 'Lalit'), (02, 'Atharva')  
+use ## fro global temp tbl
+
+---------------------------------
+
+SELECT TOP 2*
+FROM Employee
+WHERE Salary>2000
+ORDER BY Salary;
+
+SELECT TOP 50 PERCENT*
+FROM Employee;
+
+selests top 2 rows from 3rd row-> offset can be used with limit only
+SELECT * FROM Employee
+LIMIT 2 OFFSET 2;
+
+---------------------------------------------------------
+SELECT * FROM assignment_details
+WHERE submission_date='2021-04-20';
+
+exec tblnam 
+~desc tblnm
+--------------------------
+show duplicated rows with there duplicated count
+SELECT EMPNAME,DEPT,CONTACTNO,CITY, 
+COUNT(*) FROM DETAILS
+GROUP BY EMPNAME,DEPT,CONTACTNO,CITY
+HAVING COUNT(*)>1
+
+delete duplicated rec -----
+delete from SCOTT.EMP where empno not in (select min(empno) from SCOTT.EMP group by job);  --delete all except minmumest dupplicate id 
+----------------------
+
+select p.product_name,sum(o.unit) unit from orders o left outer join products p  on p.product_id=o.product_id where order_Date like "%-02-%" group by p.product_name having unit>99 is better than >=100;
+
+
+--------------------
+CREATE TABLE demo_orders 
+(
+ORDER_ID INT IDENTITY(1,1) PRIMARY KEY, 
+--IDENTITY(1,1) is same as AUTO_INCREMENT in MySQL.
+column1 datatype AUTO_INCREMENT, -- sequence col
+--Starts from 1 and increases by 1 with each inserted row.
+ITEM_NAME VARCHAR(30) NOT NULL,
+ORDER_DATE DATE
+PRIMARY KEY (rollNumber, mobile)); --- composite/surrogate key --not printed
+);
+
+ALTER TABLE CUSTOMERS AUTO_INCREMENT = 100;
+-----------------------------------
+update data from other table lookup
+
+UPDATE Geeks1  
+SET col2 = Geeks2.col2,  
+col3 = Geeks2.col3  
+FROM Geeks1  
+INNER JOIN Geeks2 ON Geeks1.col1 = Geeks2.col1  
+WHERE Geeks1.col1 IN (21, 31);
+
+
+------------------
+procedures
+ stored procedure is a group of pre-compiled SQL statements (prepared SQL code) that can be reused
+
+DELIMITER //
+CREATE PROCEDURE procedure_name(inout parameter1 datatype, parameter2 datatype, ...)
+BEGIN
+   -- SQL statements to be executed
+END
+DELIMITER ;
+
+----------
+declare vars in ().below customerAge var is IN bcoz only read op in proc and not write any val in it.
+DELIMITER //
+CREATE PROCEDURE GetCustomerInfo(IN CustomerAge INT)
+   BEGIN
+      SELECT * FROM CUSTOMERS WHERE AGE = CustomerAge;
+   END //
+DELIMITER ;
+
+-> CALL GetCustomerInfo(25); --execiuts the proc
+
+IN -> for input args, OUT for o/p data
+--------------
+below o/p stored in total and retrnd
+DELIMITER //
+CREATE PROCEDURE GetDetail(OUT total INT)
+   BEGIN
+      SELECT COUNT(AGE) INTO total FROM CUSTOMERS
+      WHERE AGE = 25;
+   END //
+DELIMITER ;
+CALL GetDetail(@total); -->storing o/p in total var
+select @total;
+
+-------------------------
+The stored procedure first retrieves the current salary of the customer from the database using the cust_id parameter. It then increases the salary by 10% and updates the customers salary in the database using the same parameter.
+DELIMITER //
+CREATE PROCEDURE increaseSalary(INOUT Cust_Id Int,  INOUT curr_Salary Int)
+   BEGIN
+      SELECT SALARY INTO curr_Salary From CUSTOMERS Where ID = Cust_Id;
+      SET curr_Salary = curr_Salary * 1.1;
+      Update CUSTOMERS SET SALARY = curr_Salary Where ID = Cust_Id;
+   END //
+DELIMITER ;
+
+
+SET @customerID = 1;
+SET @salary = 0.0;
+CALL increaseSalary(@customerID, @salary);
+SELECT @salary AS updated_salary;
+
+-------------------------
+Cursor is a temporary memory that is allocated by the database server at the time of performing the Data Manipulation Language operations
+
+
+-------------
+tuniing
+Normalization is the process of removing of duplicate data from a database. We can normalize a database by breaking down larger tables into smaller related tables. This increases the performance of database as it requires less time to retrieve data from small tables instead of one large table.
+preventbottleneck, up to date versions , cpu increase
+We use indexes in our database to reduce query time, as the database engine can jump to the location of a specific record using its index instead of scanning the entire database.
+The DISTINCT operator in SQL is used to retrieve unique records from the database. And on a properly designed database table with unique indexes, we rarely use it.
+
+But, if we still have to use it on a table, using the GROUP BY clause instead of the DISTINCT keyword shows a better query performance (at least in some databases).
+ by breaking the different OR conditions into separate queries, which can be processed parallelly by the database. Then, the results from these queries can be combined using UNION.
+
+ With WHERE clause, only the records that match the condition are retrieved. But with HAVING clause, it first retrieves all the records and then filters
+
+0-------------------------------
+
+* - match 0 0r mmore instance of strings preceding it.
++ one or more
+? 0 or 1
+match any single char in exception of a new line
+^ - caret - match at begining
+| - vertical bar - isolate alternatives
+[...] , (...) match any of the enclosed chars
+[^...] match any excluding enclosed
+[A-Z] match any upper case, [a-z] - any lower case
+[0-9] match no
+e.g exp
+abc - exact seq anywhere
+^abc - at begingg
+abc$ - at end
+a|b - either a or b
+^abc|abc$ - beging or end
+
+-----------------------------------
+SELECT * FROM Customers
+WHERE email
+REGEXP '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$';
+
+^[A-Za-z0-9._%+-]+ - the email must start with one or more alphanumeric characters, dots, underscores, percent signs, plus signs, or hyphens.
+@ - this is the mandatory at symbol in an email address.
+[A-Za-z0-9.-]+ - after the at symbol, the email must have one or more alphanumeric characters, dots, or hyphens.
+
+
+----------------------------
+select x.user_id,coalesce(round((f.cnf/f.ttl),2),0) confirmation_rate from
+(select s.user_id usr,
+(select count(c.action) from Confirmations c where c.action='confirmed' and c.user_id=s.user_id) cnf,
+  (select count(v.action) from Confirmations v where v.user_id=s.user_id) ttl 
+from Confirmations s 
+group by s.user_id) f 
+right join signups x 
+on x.user_id=f.usr;
+
+-------------------------------------------------------
+select 
+substr(trans_date,1, 7) month,
+country,
+count(trans_date) trans_count,
+sum(case when state='approved' then 1 else 0 end) approved_count, --2 ways as below
+count(case when state='approved' then 1 else null end) approved_count,
+sum(amount)  trans_total_amount,
+sum(case when state='approved' then amount else 0 end) approved_total_amount from Transactions
+group by country,month;
+
+-----------------------------
+select round((sum(case when s.mod=s.pd then 1 else 0 end))
+*100/(count(s.cid)),2) immediate_percentage 
+from
+(select d.customer_id cid,
+ min(d.order_date) mod, 
+min(d.customer_pref_delivery_date) pd 
+from
+Delivery d
+group by d.customer_id) s;
+
+can get total uni count of custmer id on which grp by applied. rest inside numeroc funs are at individual group level.
+if grp by was on main query, wont have been able to get count of total group by units.
+-------------------------------
+select 
+(e2.name) name
+from
+employee e1
+join Employee e2
+on e1.managerid=e2.id
+group by e2.id, e2.name
+having count(e1.id)>4;
+had to grp by id but neded print of name, as its same as id, used that also in grp by.join is optimized than simple grp by
+------------------------------
+seelct delta new rec in left src tbl----
+INSERT INTO target_table (columns)
+SELECT s.*
+FROM staging_table s
+LEFT JOIN target_table t ON s.primary_key = t.primary_key
+WHERE t.primary_key IS NULL;
+----------------------------------
+identfy new updtd col vals----
+SELECT s.*
+FROM staging_table s
+JOIN target_table t ON s.primary_key = t.primary_key
+WHERE s.column1 <> t.column1
+   OR s.column2 <> t.column2
+   ...
+   OR s.column1000 <> t.column1000;
+
+
+------------------------------------------
+/* Selecting the Target and the Source */
+MERGE PRODUCT_LIST AS TARGET
+    USING UPDATE_LIST AS SOURCE 
+
+    /* 1. Performing the UPDATE operation */
+
+    /* If the P_ID is same, 
+       check for change in P_NAME or P_PRICE */
+    ON (TARGET.P_ID = SOURCE.P_ID)
+    WHEN MATCHED 
+         AND TARGET.P_NAME <> SOURCE.P_NAME 
+         OR TARGET.P_PRICE <> SOURCE.P_PRICE
+
+    /* Update the records in TARGET */
+    THEN UPDATE 
+         SET TARGET.P_NAME = SOURCE.P_NAME,
+         TARGET.P_PRICE = SOURCE.P_PRICE
+     
+    /* 2. Performing the INSERT operation */
+
+    /* When no records are matched with TARGET table 
+       Then insert the records in the target table */
+    WHEN NOT MATCHED BY TARGET 
+    THEN INSERT (P_ID, P_NAME, P_PRICE)          
+         VALUES (SOURCE.P_ID, SOURCE.P_NAME, SOURCE.P_PRICE)
+
+    /* 3. Performing the DELETE operation */
+
+    /* When no records are matched with SOURCE table 
+       Then delete the records from the target table */
+    WHEN NOT MATCHED BY SOURCE 
+    THEN DELETE
+
+-----------------------------------------------------
+
+Before Triggers: These are performed before the operation is done or before an operation such as INSERT, UPDATE OR DELETE is performed. They can be used to check the values of input data and even transform this data before it is inserted into or updated in the database.
+After Triggers: These are invoked after the operation is over. They are effective in activities that involve capturing any modification or exercising functions based on the event—firing or calling other events.
+Instead of Triggers: These supplant the firing event, which in turn means that the intended operation (INSERT, UPDATE, DELETE) does not occur, but instead the action of the trigger is executed. These are usually applied with views to compel specific kinds of logic.
+
+A Trigger is implicitly invoked whenever any event such as INSERT, DELETE, or UPDATE occurs in a TABLE.
+A Procedure is explicitly called by the user/application using statements or commands such as exec, EXECUTE, or simply procedure name
+
+a procedure cannot directly call a trigger, but a trigger can invoke a procedure as part of its action.
+
+-----------------
+CREATE TABLE child_table (
+    id INT PRIMARY KEY,
+    parent_id INT,
+    description VARCHAR(100),
+    FOREIGN KEY (parent_id) REFERENCES parent_table(id) ON DELETE CASCADE -->deletes child tbl rec if corspnding parent rec deleted
+);
+
+
+
+---------------------------------------------
+Performance-------
+--------------------
+Subquery --
+inner query complete result is evaluated for every row of outer query.
+Join - combined result is fetched at once and filtered
+ further,
+join can be made faster with leveraging indexes<like lookup tables to locate required row> to avoid full table scans.
+use of views.
+
+updatable views----- views which can be updated and underlying tbl will also get updtd--
+for this the view must be a simple select of single table without any agregate or derived mathemetical col.
+
+if the join read is same reused, use views, provides a security to show only data required, and provides abstraction layer from underlying table.
+
+
+
+
